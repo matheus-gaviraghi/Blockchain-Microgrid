@@ -1,0 +1,1 @@
+Esse projeto refere-se ao projeto de pesquisa o qual realizou-se implementação da tecnologia Blockchain em uma Microgrid localizada na cidade de Lubbock, Texas EUA
