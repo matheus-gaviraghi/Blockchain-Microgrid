@@ -1,7 +1,7 @@
 {
-    "name": "eolichain-chaincode",
+    "name": "microgrid-chaincode",
     "version": "1.0.0",
-    "description": "Our first Node.js Chaincode on Kaleido",
+    "description": "This chaincode will allow the execution of the functions needed in the microgrid",
     "main": "index.js",
     "engines": {
         "node": ">=8",

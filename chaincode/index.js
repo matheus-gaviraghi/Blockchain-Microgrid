@@ -1,3 +1,3 @@
 'use strict';
-const TestContract = require('./chaincode');
-module.exports.contracts = [ TestContract ];
+const Chaincode_Contract = require('./chaincode');
+module.exports.contracts = [ Chaincode_Contract ];
