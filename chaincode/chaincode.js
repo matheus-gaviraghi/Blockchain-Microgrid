@@ -99,25 +99,10 @@ async requireMaintenanceTeste(ctx, x){
   let workOrderNumber = ano + mes + dia + "-" + String(number);
   let indexKey = "W.O." + workOrderNumber;
 
-  const startKey = '';
-  const endKey = '';
-  const allResults = [];
-  for await (const {key, value} of ctx.stub.getStateByRange(startKey, endKey)) {
-      const strValue = Buffer.from(value).toString('utf8');
-      let record;
-      try {
-          record = JSON.parse(strValue);
-      } catch (err) {
-          console.log(err);
-          record = strValue;
-      }
-      allResults.push({ Key: key, Record: record });
-  }
+  let exists = JSON.parse(await this.queryAll())
 
-  //let exists = JSON.parse(await this.queryAll())
-
-  for (let i = 0; i < allResults.length; i++){
-    if (allResults[i].Key == indexKey){
+  for (let i = 0; i < length(exists); i++){
+    if (exists[i].key == indexKey){
       number += 1;
       workOrderNumber = ano + mes + dia + "-" + String(number);
       indexKey = "W.O." + workOrderNumber;    
@@ -198,7 +183,6 @@ async maintenanceRecordsCK(ctx){
 
 
 // ====================================================================================
-
 
 }    
 module.exports = Chaincode_Contract;
