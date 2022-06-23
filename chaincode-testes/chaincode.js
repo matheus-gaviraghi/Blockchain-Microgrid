@@ -11,17 +11,6 @@ class Chaincode_Contract extends Contract {
   }
 
   /**
-   * is done befor the transaction starts
-   * @param {*} ctx 
-   */
-  async beforeTransaction(ctx) {
-    // default implementation is do nothing
-    this.TxId = ctx.stub.getTxID();
-    console.log(`we can do some logging for ${this.TxId} !!`)
-  }
-
-
-  /**
    * store a new state
    * @param {*} ctx 
    * @param {*} revenue 
@@ -31,6 +20,7 @@ class Chaincode_Contract extends Contract {
   async requireMaintenance(ctx, x) {
 
     let registro = JSON.parse(x)
+    this.TxId = ctx.stub.getTxID();
 
     let newWorkOrder = {
       solarPowerPanelNumber: registro.panelNumber,
@@ -121,6 +111,7 @@ class Chaincode_Contract extends Contract {
         if(keyArgumentos[1] == keys[0]){
           retornos.push(resultados[i])
         }
+        keyArgumentos = []
       }
     }
     else if (tamanho == 2){ // Pesquisa por ano + mês
@@ -131,6 +122,7 @@ class Chaincode_Contract extends Contract {
         if(keyArgumentos[1] == keys[0] && keyArgumentos[2] == keys[1]){
           retornos.push(resultados[i])
         }
+        keyArgumentos = []
       }
     }
     else if (tamanho == 3){ // Pesquisa por ano + mês + dia
@@ -141,6 +133,7 @@ class Chaincode_Contract extends Contract {
         if(keyArgumentos[1] == keys[0] && keyArgumentos[2] == keys[1] && keyArgumentos[3] == keys[2]){
           retornos.push(resultados[i])
         }
+        keyArgumentos = []
       }
     }
     
@@ -152,6 +145,7 @@ class Chaincode_Contract extends Contract {
         if(keyArgumentos[1] == keys[0] && keyArgumentos[2] == keys[1] && keyArgumentos[3] == keys[2] && keyArgumentos[4] == keys[3]){
           retornos.push(resultados[i])
         }
+        keyArgumentos = []
       }
     }
 
