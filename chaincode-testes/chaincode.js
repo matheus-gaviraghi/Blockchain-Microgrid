@@ -15,7 +15,8 @@ class Chaincode_Contract extends Contract {
       solarInverterNumber: registro.inverterNumber,
       typeOfWork: registro.workType,
       requirementDescription: registro.requirement,
-      txId: this.TxId }
+      txId: this.TxId,
+      Status: "Pending" }
 
     try {
       let data = new Date();
@@ -191,11 +192,44 @@ class Chaincode_Contract extends Contract {
       WOexecuterDate: argumentos.executerDate,
       WOmanager: argumentos.manager,
       WOmanagerDate: argumentos.managerDate,
+      Status: "Done"
     }
 
     await ctx.stub.putState(argumentos.ID, Buffer.from(JSON.stringify(finalWO)));    
  }
 
+ async countPerStatus(ctx){
+  const startKey = '';
+  const endKey = '';
+  const allResults = [];
+  for await (const {key, value} of ctx.stub.getStateByRange(startKey, endKey)) {
+      const strValue = Buffer.from(value).toString('utf8');
+      let record;
+      try {
+          record = JSON.parse(strValue);
+      } catch (err) {
+          console.log(err);
+          record = strValue;
+      }
+      allResults.push({ Key: key, Record: record });
+  }
+  var nDone = 0
+  var nPending = 0
+
+  for (var i=0; i < allResults.length; i++){
+    if (allResults[i].Record.Status == "Done"){
+      nDone += 1
+    }
+    else if (allResults[i].Record.Status == "Pending"){
+      nPending += 1
+    } 
+  }
+  let resultados = {
+    numberWOdone: nDone, 
+    numberWOpending: nPending }
+
+  return JSON.stringify(resultados) 
+ }
 
  // fazer o sistema de status: até não atualizar a W.O., fica como status "pendente"
  // ao atualizar, muda pra "done"
