@@ -154,7 +154,52 @@ class Chaincode_Contract extends Contract {
     return JSON.stringify(allResults);
   }
 
+  // função que pesquisa uma W.O. específica
+   async searchWorkOrder(ctx, ID){
 
+    const WOAsBytes = await ctx.stub.getState(ID); 
+    if (!WOAsBytes || WOAsBytes.length === 0) {
+      throw new Error(`${ID} does not exist`);
+    }
+    return WOAsBytes.toString('utf8');
+  }
+
+  // função que atualiza uma W.O. específica
+  async updateWorkOrder(ctx, args){
+    
+    var argumentos = JSON.parse(args)
+    const WOAsBytes = await ctx.stub.getState(argumentos.ID); 
+    
+    if (!WOAsBytes || WOAsBytes.length === 0) {
+      throw new Error(`${argumentos.ID} does not exist`);
+    }
+    var resultado = JSON.parse(WOAsBytes.toString('utf8'));
+
+    var TxId = ctx.stub.getTxID();
+
+    let finalWO = {
+      solarPowerPanelNumber: resultado.solarPowerPanelNumber,
+      solarInverterNumber: resultado.solarInverterNumber,
+      typeOfWork: resultado.typeOfWork,
+      requirementDescription: resultado.requirementDescription,
+      previoustxId: resultado.txId,
+      updatetxId: TxId,
+      workDescription: argumentos.work,
+      startDate: argumentos.start,
+      endDate: argumentos.end,
+      WOexecuter: argumentos.executer,
+      WOexecuterDate: argumentos.executerDate,
+      WOmanager: argumentos.manager,
+      WOmanagerDate: argumentos.managerDate,
+    }
+
+    await ctx.stub.putState(argumentos.ID, Buffer.from(JSON.stringify(finalWO)));    
+ }
+
+
+ // fazer o sistema de status: até não atualizar a W.O., fica como status "pendente"
+ // ao atualizar, muda pra "done"
+ 
 };
 
 module.exports = Chaincode_Contract
