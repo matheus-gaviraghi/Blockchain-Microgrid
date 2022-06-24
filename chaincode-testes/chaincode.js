@@ -5,18 +5,6 @@ const { Contract } = require('fabric-contract-api');
 
 class Chaincode_Contract extends Contract {
 
-  constructor(){
-    super('Chaincode_Contract');
-    this.TxId = ''
-  }
-
-  /**
-   * store a new state
-   * @param {*} ctx 
-   * @param {*} revenue 
-   * @param {*} revenueTs
-   * @param {*} cstype
-   */
   async requireMaintenance(ctx, x) {
 
     let registro = JSON.parse(x)
@@ -30,7 +18,6 @@ class Chaincode_Contract extends Contract {
       txId: this.TxId }
 
     try {
-    
       let data = new Date();
       let dia = String(data.getDate()).padStart(2, '0');
       let mes = String(data.getMonth() + 1).padStart(2, '0');
@@ -53,7 +40,6 @@ class Chaincode_Contract extends Contract {
           }
           allResults.push({ Key: key, Record: record });
       }
-
       for (let i = 0; i < allResults.length; i++){
         if (allResults[i].Key == indexKey){
           number += 1;
@@ -61,30 +47,27 @@ class Chaincode_Contract extends Contract {
           indexKey = "W.O." + "-" + workOrderNumber;    
         }
       }
+    
       await ctx.stub.putState(indexKey, Buffer.from(JSON.stringify(newWorkOrder)));    
 
     } catch(e){
       throw new Error(`The tx ${this.TxId} (${indexKey}) can not be stored: ${e}`);
     }
-  
   }
 
+  // pesquisar por data específica
+  // Tipo da data que deve ser enviada: yyyy-mm-dd-W.O.number(X)
+  // Adicionar o W.O ao início dos argumentos
   async getRecordsPerDate(ctx){
-
-    // pesquisar por data específica
-    // Tipo da data que deve ser enviada: yyyy-mm-dd-WOnumber
-    // Adicionar o W.O ao início dos argumentos
-
-    // we use the args option
-    const args = ctx.stub.getArgs();
-    // we split the key into single peaces
-    const keyValues = args[1].split('-')    
-    // collect the keys
-    let keys = []
-    keyValues.forEach(element => keys.push(element))
     
-    let tamanho = keys.length;
+    const args = ctx.stub.getArgs(); // pega os argumentos passados
+    const keyValues = args[1].split('-')  // divide as keys em partes, separando a cada -  
+    let keys = []
+    keyValues.forEach(element => keys.push(element)) // cria um vetor das chaves que foram separadas anteriormente
 
+    let tamanho = keys.length; // pega a quantidade de argumentos que foram passados para fazer a lógica de busca
+
+    // faz a varredura do Ledger para pegar todos os registros
     const startKey = '';
     const endKey = '';    
     const resultados = [];
@@ -100,22 +83,22 @@ class Chaincode_Contract extends Contract {
         resultados.push({ Key: key, Record: record });
     }
 
-    let retornos = []
-    let keyArgumentos = []
+    let retornos = [] // esse vetor conterá os resultados filtrados de acordo com a data passada como argumento
+    let keyArgumentos = [] // esse vetor conterá a key do registro, separado a cada - 
 
-    if (tamanho == 1){ // Pesquisa por ano
-      // divide as keys dos resultados 
+    // Argumento passado: apenas o ano (yyyy)
+    if (tamanho == 1){ 
       for (let i = 0; i < resultados.length; i++){
         let valores = resultados[i].Key.split('-')
         valores.forEach(element => keyArgumentos.push(element))
-        if(keyArgumentos[1] == keys[0]){
-          retornos.push(resultados[i])
+        if(keyArgumentos[1] == keys[0]){ // compara a key referente ao ano com o primeiro argumento passado, que compreende ao ano
+          retornos.push(resultados[i]) // se for o mesmo, adiciona o registro ao vetor retornos
         }
-        keyArgumentos = []
+        keyArgumentos = [] // apaga os dados da variável para a próxima busca
       }
     }
-    else if (tamanho == 2){ // Pesquisa por ano + mês
-      // divide as keys dos resultados 
+    // Argumento passado: Ano (yyyy) e mês (mm)
+    else if (tamanho == 2){ 
       for (let i = 0; i < resultados.length; i++){
         let valores = resultados[i].Key.split('-')
         valores.forEach(element => keyArgumentos.push(element))
@@ -125,8 +108,8 @@ class Chaincode_Contract extends Contract {
         keyArgumentos = []
       }
     }
-    else if (tamanho == 3){ // Pesquisa por ano + mês + dia
-      // divide as keys dos resultados 
+    // Argumento passado: Ano (yyyy), mês (mm) e dia (dd)
+    else if (tamanho == 3){ 
       for (let i = 0; i < resultados.length; i++){
         let valores = resultados[i].Key.split('-')
         valores.forEach(element => keyArgumentos.push(element))
@@ -136,9 +119,9 @@ class Chaincode_Contract extends Contract {
         keyArgumentos = []
       }
     }
-    
-    else if (tamanho == 4){ // Pesquisa por ano + mês + dia + number
-      // divide as keys dos resultados 
+
+    // Argumento passado: Ano (yyyy), mês (mm), dia (dd) e W.O. number (X)
+    else if (tamanho == 4){
       for (let i = 0; i < resultados.length; i++){
         let valores = resultados[i].Key.split('-')
         valores.forEach(element => keyArgumentos.push(element))
@@ -148,10 +131,10 @@ class Chaincode_Contract extends Contract {
         keyArgumentos = []
       }
     }
-
     return JSON.stringify(retornos);   
   }
 
+  // função que retorna todos os registros presentes no Ledger
   async queryAll(ctx) {
     const startKey = '';
     const endKey = '';
