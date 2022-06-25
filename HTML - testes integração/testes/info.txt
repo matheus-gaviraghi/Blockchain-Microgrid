@@ -1,0 +1,15 @@
+(solar plant)
+ID: u0ocxbpi32 
+Password: pGLEWA7VyWE3EGA7TQOiaizgSalPlW4HDNmbRYLODco
+Basic auth: u0ocxbpi32:pGLEWA7VyWE3EGA7TQOiaizgSalPlW4HDNmbRYLODco
+Authorization header: Authorization: Basic dTBvY3hicGkzMjpwR0xFV0E3VnlXRTNFR0E3VFFPaWFpemdTYWxQbFc0SERObWJSWUxPRGNv
+Endpoint Peer: https://u0miw00e6f-u0m1xl8pkg-peer.us0-aws-ws.kaleido.io/
+API Endpoint: https://u0miw00e6f-u0m1xl8pkg-connect.us0-aws-ws.kaleido.io/
+====================================================================================================================
+(maintenance team)
+ID: u0nkw5hrnk
+Password: VatCDImQFffeWBxdM-br53w3kc4DWj1yGQbFwLiVD3g
+Basic auth: u0nkw5hrnk:VatCDImQFffeWBxdM-br53w3kc4DWj1yGQbFwLiVD3g
+Authorization header: Authorization: Basic dTBua3c1aHJuazpWYXRDREltUUZmZmVXQnhkTS1icjUzdzNrYzREV2oxeUdRYkZ3TGlWRDNn
+Endpoint: https://u0nkw5hrnk:VatCDImQFffeWBxdM-br53w3kc4DWj1yGQbFwLiVD3g@u0miw00e6f-u0hytrfppt-peer.us0-aws-ws.kaleido.io/
+API Endpoint: https://u0miw00e6f-u0hytrfppt-connect.us0-aws-ws.kaleido.io/

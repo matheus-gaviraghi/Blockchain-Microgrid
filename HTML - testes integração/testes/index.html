@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de testes</title>
+</head>
+<body>
+    <h1>Essa página foi construída somente para testes de comunicação com a API</h1>
+    <h2>Isso justifica o fato de não ser atrativa (somente HTML puro aplicado)</h2> <hr>
+
+    <p><strong>Ver informações sobre todas as identidades</strong></p>
+    <p>
+        <form onsubmit="identitiesGET()">
+            <label for="ORG">ORG:</label>
+            <input name="ORG" id="ORG" type="text">
+            <button type="submit">GET Identities</button>
+        </form>
+    </p> <hr>
+
+    <p><strong>Ver informações sobre uma identidade específica</strong></p>
+    <p>
+        <form onsubmit="identitiesGETbyUsername()">
+            <label for="ORG_Identity">ORG:</label>
+            <input name="ORG_Identity" id="ORG_Identity" type="text">
+            <label for="nome">Nome:</label>
+            <input name="nome" id="nome" type="text">
+            <button type="submit">GET Identity</button>
+        </form>
+    </p> <hr>
+
+    <p><strong>Registrar uma nova Work Order</strong></p>
+    <p>
+        <form onsubmit="transactionPOST()">
+            <ul>
+                <li>
+                    <label for="organization">ORG:</label>
+                    <input name="organization" id="organization" type="text">
+                </li>
+                <li>
+                    <label for="signer">Signer:</label>
+                    <input name="signer" id="signer" type="text">
+                </li>
+                <li>
+                    <label for="panelNumber">Panel Number:</label>
+                    <input name="panelNumber" id="panelNumber" type="text">
+                </li>
+                <li>
+                    <label for="inverterNumber">Inverter Number:</label>
+                    <input name="inverterNumber" id="inverterNumber" type="text">
+                </li>
+                <li>
+                    <label for="workType">Work Type:</label>
+                    <input name="workType" id="workType" type="text">
+                </li>
+                <li>
+                    <label for="requirement">Requirement Description:</label>
+                    <input name="requirement" id="requirement" type="text">
+                </li>
+                <button type="submit">Submit Transaction</button>
+            </ul>
+        </form>
+    </p>
+</body>
+
+<script type="text/javascript" src="logic.js"></script>
+
+</html>
